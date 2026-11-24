@@ -78,6 +78,11 @@ if (process.env.VERCEL !== "1") {
 const asyncHandler = handler => (req, res, next) => Promise.resolve(handler(req, res, next)).catch(next);
 const isUniqueViolation = error => error.code === "23505" || error.code === "SQLITE_CONSTRAINT_UNIQUE";
 
+app.get("/healthz", asyncHandler(async (_req, res) => {
+  await db.get("SELECT 1 AS ok");
+  res.json({ status: "ok" });
+}));
+
 const auth = asyncHandler(async (req, res, next) => {
   const header = req.headers.authorization || "";
   const token = header.startsWith("Bearer ") ? header.slice(7) : "";

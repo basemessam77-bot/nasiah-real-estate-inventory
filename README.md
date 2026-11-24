@@ -35,20 +35,14 @@
 - يدعم التطبيق SQLite محلياً وPostgreSQL عند ضبط `DATABASE_URL`.
 - يمكن نشر Express على Vercel وربطه بقاعدة Neon PostgreSQL. Vercel Hobby مخصص للاستخدام الشخصي وقد تتغير حدود الخطة أو شروطها؛ تحقق منها قبل الاستخدام التجاري.
 - أنشئ قاعدة PostgreSQL مجانية في Neon، وانسخ connection string. لا تضعه في الملفات أو GitHub.
-- من PowerShell داخل مجلد المشروع، عيّن الاتصال وشغّل ترحيل البيانات مرة واحدة:
+- من PowerShell شغّل السكربت التالي، ثم الصق pooled connection string من Neon عند الطلب. تُقرأ القيمة كإدخال مخفي ولا تُحفظ في الملف أو Git:
   ```powershell
-  $secureUrl = Read-Host "Neon connection string" -AsSecureString
-  try {
-    $env:DATABASE_URL = [System.Net.NetworkCredential]::new("", $secureUrl).Password
-    npm run migrate:neon
-    if ($LASTEXITCODE -ne 0) { throw "Migration failed" }
-  } finally {
-    Remove-Item Env:DATABASE_URL -ErrorAction SilentlyContinue
-    $secureUrl.Dispose()
-  }
+  Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+  .\scripts\migrate-neon.ps1
   ```
+  يقتصر تجاوز سياسة تشغيل السكربت على نافذة PowerShell الحالية.
   يتوقف الترحيل إذا لم تكن قاعدة Neon فارغة. ينقل الحسابات والعقارات، ولا ينقل جلسات الدخول. يطلب من حسابات Admin تغيير كلمة المرور عند أول دخول.
-- استورد المستودع إلى Vercel، واترك framework detection على Express. أضف `DATABASE_URL` في إعدادات المشروع تحت Environment Variables كـ Secret، باستخدام pooled connection string من Neon.
+- استورد المستودع إلى Vercel، واترك framework detection على Express. أضف `DATABASE_URL` في إعدادات المشروع تحت Environment Variables كـ Secret، باستخدام pooled connection string من Neon. أدخل السر مباشرة في لوحة Vercel، لا في Chat أو ملف داخل المستودع، ثم أعد النشر.
 - أضف `INITIAL_ADMIN_USERNAME` و`INITIAL_ADMIN_PASSWORD` إلى Vercel فقط إذا لم تُرحّل حسابات مستخدمين؛ كلمة المرور الأولية يجب أن تكون 16 حرفاً على الأقل، ويُطلب تغييرها عند أول دخول.
 - لا ترفع `data/` أو `.env` أو `seed-accounts.json` إلى GitHub. هذه المسارات مستثناة في `.gitignore`. تجنب إضافة معلومات العملاء إلى أي مستودع.
 - استخدم مستودعاً خاصاً، HTTPS، كلمات مرور قوية وفريدة، ونسخاً احتياطياً دورياً. رابط Vercel عام، لكن بيانات التطبيق تتطلب تسجيل الدخول؛ قاعدة Neon لا تكون متاحة إلا عبر اتصال TLS باستخدام السر الخاص المخزن في إعدادات الاستضافة.

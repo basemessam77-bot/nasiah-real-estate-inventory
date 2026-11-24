@@ -64,7 +64,16 @@ async function seedInitialAccounts() {
 await seedInitialAccounts();
 
 app.use(express.json({ limit: "2mb" }));
-app.use(express.static(path.join(__dirname, "public")));
+app.disable("x-powered-by");
+app.use((req, res, next) => {
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("Referrer-Policy", "same-origin");
+  res.setHeader("X-Frame-Options", "DENY");
+  next();
+});
+if (process.env.VERCEL !== "1") {
+  app.use(express.static(path.join(__dirname, "public")));
+}
 
 const asyncHandler = handler => (req, res, next) => Promise.resolve(handler(req, res, next)).catch(next);
 const isUniqueViolation = error => error.code === "23505" || error.code === "SQLITE_CONSTRAINT_UNIQUE";
@@ -276,5 +285,12 @@ app.use((error, req, res, next) => {
   if (res.headersSent) return next(error);
   res.status(500).json({error:"حدث خطأ داخلي"});
 });
-app.get("*", (req,res) => res.sendFile(path.join(__dirname,"public","index.html")));
-app.listen(PORT, "0.0.0.0", () => console.log(`Inventory system running on port ${PORT}`));
+if (process.env.VERCEL !== "1") {
+  app.get("*", (req,res) => res.sendFile(path.join(__dirname,"public","index.html")));
+}
+
+export default app;
+
+if (process.env.VERCEL !== "1") {
+  app.listen(PORT, "0.0.0.0", () => console.log(`Inventory system running on port ${PORT}`));
+}

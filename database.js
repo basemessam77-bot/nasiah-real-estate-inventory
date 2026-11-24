@@ -97,13 +97,26 @@ function postgresPlaceholders(sql) {
 class DatabaseAdapter {
   constructor() {
     this.isPostgres = Boolean(process.env.DATABASE_URL);
+    if (process.env.VERCEL === "1" && !this.isPostgres) {
+      throw new Error("DATABASE_URL is required for the Vercel deployment.");
+    }
     this.sqlite = null;
     this.pool = null;
   }
 
   async init() {
     if (this.isPostgres) {
-      this.pool = new Pool({ connectionString: process.env.DATABASE_URL });
+      const connection = new URL(process.env.DATABASE_URL);
+      if (!["require", "verify-ca", "verify-full"].includes(connection.searchParams.get("sslmode"))) {
+        throw new Error("DATABASE_URL must require TLS (sslmode=require or stricter).");
+      }
+      this.pool = new Pool({
+        connectionString: process.env.DATABASE_URL,
+        max: 1,
+        connectionTimeoutMillis: 10000,
+        idleTimeoutMillis: 10000,
+        keepAlive: true
+      });
       for (const statement of postgresSchema) await this.pool.query(statement);
       return;
     }

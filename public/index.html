@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#142b3b"><title>نظام ناصيه</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3f6f8;--card:#fff;--ink:#1d2c38;--muted:#73818d;--line:#e5ebef;--navy:#142f40;--navy2:#1d4558;--gold:#c39a5b;--green:#16845c;--red:#bd4141;--blue:#2b6cb0;--shadow:0 8px 28px rgba(20,47,64,.07)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Cairo,Arial,sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;border:0;border-radius:12px;padding:11px 16px;font-weight:800;transition:transform .18s,box-shadow .18s,background .18s;min-height:44px}
+button:hover{transform:translateY(-1px)}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #c39a5b55;outline-offset:2px}
+.primary{background:linear-gradient(135deg,var(--navy),var(--navy2));color:white;box-shadow:0 5px 14px #142f4024}
+.secondary{background:#f4f7f8;color:#294354;border:1px solid #e2e9ed}
+.danger{background:#fff2f1;color:var(--red);border:1px solid #f5dfdd}
+.muted{color:var(--muted)}.hidden{display:none!important}
+.login-wrap{min-height:100svh;display:grid;place-items:center;padding:22px;background:radial-gradient(ellipse at 15% 15%,#e4edf0 0,transparent 42%),linear-gradient(145deg,#f8fafb,#eaf0f3)}
+.login-card{width:min(440px,100%);background:white;border:1px solid #e6ecef;border-radius:28px;padding:36px;box-shadow:0 25px 80px rgba(20,47,64,.13)}
+.brand{text-align:center;margin-bottom:27px}
+.brand-mark{width:72px;height:72px;border-radius:23px;background:linear-gradient(145deg,#18394b,#102838);color:#e5c18b;display:grid;place-items:center;font-size:37px;font-weight:800;margin:0 auto 15px;border:1px solid #d5b47e;box-shadow:0 9px 24px #142f4030}
+.brand-mark span{line-height:1}
+.brand h1{font-size:27px;margin:0;color:var(--navy);font-weight:900}.brand p{margin:6px 0;color:var(--muted);font-size:13px}
+label{display:block;font-size:13px;font-weight:800;margin:13px 0 6px;color:#40515d}
+input,select,textarea{width:100%;padding:12px 13px;border:1px solid #dfe7eb;border-radius:12px;background:#fff;outline:none;color:var(--ink);min-height:46px}
+input:focus,select:focus,textarea:focus{border-color:#b99559;box-shadow:0 0 0 3px #b9955918}
+textarea{min-height:85px;resize:vertical}
+.app{min-height:100svh}
+.topbar{background:linear-gradient(110deg,#102838,#1b4356);color:#fff;padding:15px clamp(14px,3vw,34px);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;border-bottom:3px solid var(--gold);box-shadow:0 5px 20px #142f4020}
+.topbar strong{font-size:21px;font-weight:900;letter-spacing:.2px}.topbar small{display:block;color:#d3e0e6;font-size:11px}
+.top-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.top-actions button{background:#ffffff16;color:#fff;border:1px solid #ffffff28}.user-chip{font-size:12px;color:#f0e4d2;background:#ffffff12;padding:8px 12px;border-radius:20px;border:1px solid #ffffff20}
+.layout{display:grid;grid-template-columns:255px minmax(0,1fr);gap:20px;padding:24px clamp(12px,2.4vw,30px);max-width:1700px;margin:auto}
+.sidebar,.panel,.stat{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)}
+.sidebar{padding:15px;height:max-content;position:sticky;top:14px}
+.side-title{font-size:12px;color:#8996a0;font-weight:900;margin:5px 9px 11px}
+.sheet-link{width:100%;display:flex;justify-content:space-between;align-items:center;gap:10px;background:white;color:#344b5a;text-align:right;margin:5px 0;border:1px solid transparent;padding:12px 11px}
+.sheet-link.active{background:#f5f0e7;border-color:#e8d9bf;color:#17394b;box-shadow:inset -3px 0 var(--gold)}
+.sheet-link small{color:#8b929a;font-weight:600}
+.content{min-width:0}
+.page-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:17px}
+.page-head h2{margin:0;font-size:23px;color:var(--navy);font-weight:900}.page-head p{margin:4px 0;color:var(--muted);font-size:13px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px}
+.stat{padding:16px 17px;border-top:3px solid var(--gold);position:relative;overflow:hidden}
+.stat span{color:var(--muted);font-size:12px;font-weight:700}.stat b{display:block;font-size:27px;color:var(--navy);margin-top:4px;font-weight:900}
+.panel{padding:17px;margin-bottom:16px}
+.toolbar{display:flex;gap:9px;flex-wrap:wrap;align-items:center}.toolbar input{max-width:360px;flex:1}.toolbar select{max-width:210px}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:13px}
+table{border-collapse:collapse;width:100%;min-width:1050px;background:white}
+th,td{padding:12px 11px;border-bottom:1px solid #edf0f3;text-align:right;white-space:nowrap;font-size:12px}
+th{background:#f4f7f8;color:#50616e;font-weight:900;position:sticky;top:0}
+tr:hover td{background:#fbfcfc}tr:last-child td{border-bottom:0}
+.pill{display:inline-block;padding:5px 10px;border-radius:30px;font-size:11px;font-weight:900}
+.available{background:#e8f5ee;color:#16744f}.sold{background:#edf2fa;color:#2d5e9a}.unavailable{background:#fff4e5;color:#94631e}
+.readonly{font-size:11px;color:var(--muted)}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 14px}.full{grid-column:1/-1}
+.modal{position:fixed;inset:0;background:rgba(13,31,43,.58);display:grid;place-items:center;padding:15px;z-index:5;backdrop-filter:blur(3px)}
+.modal-card{background:white;width:min(780px,100%);max-height:92svh;overflow:auto;border-radius:21px;padding:22px;box-shadow:0 20px 70px #17253645}
+.modal-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}.modal-head h3{margin:0;color:var(--navy);font-weight:900}
+.modal-foot{display:flex;gap:8px;justify-content:flex-start;margin-top:16px}
+.notice{padding:12px 14px;border-radius:12px;background:#eff5f7;color:#35536d;font-size:12px;margin:12px 0}
+.error{background:#fff0f0;color:#a12f2f}.empty{text-align:center;padding:38px;color:var(--muted)}
+.small-btn{padding:7px 10px;font-size:11px;min-height:34px}.stats-table{min-width:600px}
+hr{border:0;border-top:1px solid var(--line)}
+#backupBtn{background:#f8f3e9;border-color:#eadcc3;color:#624b2b}
+@media(max-width:900px){
+ .layout{grid-template-columns:1fr;padding:14px}
+ .sidebar{position:static;padding:10px;overflow:hidden}
+ .sidebar>.side-title{display:none}
+ #sheetLinks{display:flex!important;gap:7px;overflow-x:auto;padding:2px 0 7px;scrollbar-width:thin}
+ .sheet-link{min-width:max-content;width:auto;margin:0;border:1px solid var(--line);border-radius:11px}
+ .sidebar #adminTools{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+ .sidebar #adminTools hr,.sidebar #adminTools .side-title{display:none}
+ .sidebar #adminTools button{width:auto!important;margin:0!important}
+ .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:600px){
+ body{font-size:14px}
+ .topbar{padding:12px 13px;gap:10px}
+ .topbar strong{font-size:19px}
+ .top-actions{width:100%;display:grid;grid-template-columns:1fr 1fr}
+ .user-chip{grid-column:1/-1;text-align:center}
+ .top-actions button{font-size:12px;padding:9px 10px}
+ .layout{padding:10px;gap:12px}
+ .sidebar{border-radius:14px}
+ .page-head{align-items:stretch}
+ .page-head>div{width:100%}
+ .page-head h2{font-size:19px}
+ #addBtn{width:100%}
+ .stats{gap:8px}
+ .stat{padding:12px;border-radius:14px}
+ .stat b{font-size:23px}
+ .stat span{font-size:11px}
+ .panel{padding:12px;border-radius:14px}
+ .toolbar{display:grid;grid-template-columns:1fr 1fr}
+ .toolbar input{grid-column:1/-1;max-width:none}
+ .toolbar select{max-width:none;min-width:0}
+ .toolbar button{width:100%}
+ .toolbar .readonly{grid-column:1/-1}
+ /* Turn the wide desktop table into readable property cards on phones. */
+ .table-wrap{overflow:visible;border:0;background:transparent}
+ table:not(.stats-table){min-width:0;width:100%;border-collapse:separate;border-spacing:0 10px;background:transparent}
+ table:not(.stats-table) thead{display:none}
+ table:not(.stats-table) tbody{display:block}
+ table:not(.stats-table) tr{display:block;background:#fff;border:1px solid var(--line);border-radius:15px;padding:7px 12px;box-shadow:0 4px 15px #142f4009;margin-bottom:10px}
+ table:not(.stats-table) td{display:grid;grid-template-columns: minmax(92px,34%) minmax(0,1fr);gap:10px;white-space:normal;overflow-wrap:anywhere;padding:9px 2px;border-bottom:1px solid #eef1f3;font-size:12px;line-height:1.65}
+ table:not(.stats-table) td:before{content:attr(data-label);font-weight:900;color:#627480}
+ table:not(.stats-table) td:last-child{border-bottom:0}
+ table:not(.stats-table) td:nth-child(7){display:block}
+ table:not(.stats-table) td:nth-child(7):before{display:block;margin-bottom:4px}
+ table:not(.stats-table) td:nth-child(9){display:flex;align-items:center;flex-wrap:wrap;gap:7px}
+ table:not(.stats-table) td:nth-child(9):before{content:"الإجراءات";margin-left:3px}
+ .small-btn{flex:1}
+ .modal{padding:8px;align-items:end}
+ .modal-card{padding:16px;border-radius:19px 19px 12px 12px;max-height:94svh;width:100%}
+ .form-grid{grid-template-columns:1fr}
+ .full{grid-column:auto}
+ .modal-foot{display:grid;grid-template-columns:1fr 1fr}
+ .modal-foot button{width:100%}
+ .login-wrap{padding:14px}
+ .login-card{padding:25px 20px;border-radius:22px}
+ .brand-mark{width:64px;height:64px}
+ .brand h1{font-size:24px}
+ #adminStats .table-wrap{overflow:auto}
+}
+@media(max-width:360px){.stats{grid-template-columns:1fr 1fr}.toolbar{grid-template-columns:1fr}.toolbar input{grid-column:auto}}
+
+.property-row{cursor:pointer}.property-row:hover td{background:#f7f4ed}
+.property-detail{animation:detailIn .22s ease}
+@keyframes detailIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.detail-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.detail-top h2{margin:0;color:var(--navy);font-size:23px;font-weight:900;flex:1}
+.detail-hero{background:linear-gradient(120deg,#122d3e,#205067);color:#fff;border-radius:20px;padding:22px;margin-bottom:15px;border-bottom:3px solid var(--gold)}
+.detail-hero .eyebrow{color:#e5c18b;font-size:12px;font-weight:800}.detail-hero h3{font-size:24px;margin:7px 0}.detail-hero p{margin:4px 0;color:#dce7ec;font-size:13px}
+.detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.detail-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:var(--shadow);min-width:0}
+.detail-card h4{margin:0 0 12px;color:var(--navy);font-size:14px;border-bottom:1px solid var(--line);padding-bottom:9px}
+.detail-item{display:grid;grid-template-columns:minmax(115px,38%) minmax(0,1fr);gap:10px;padding:9px 0;border-bottom:1px solid #f0f2f4;font-size:13px;line-height:1.7}
+.detail-item:last-child{border-bottom:0}.detail-item span:first-child{color:var(--muted);font-weight:800}.detail-item span:last-child{font-weight:700;overflow-wrap:anywhere}
+.detail-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
+@media(max-width:600px){.detail-top h2{font-size:19px}.detail-hero{padding:18px;border-radius:16px}.detail-hero h3{font-size:21px}.detail-grid{grid-template-columns:1fr}.detail-card{padding:13px}.detail-item{grid-template-columns: minmax(105px,36%) minmax(0,1fr);font-size:12px}}
+</style></head>
+<body>
+<div id="loginView" class="login-wrap">
+ <div class="login-card">
+  <div class="brand"><div class="brand-mark"><span>ن</span></div><h1>نظام ناصيه</h1><p>منصة إدارة وحصر العقارات</p></div>
+  <form id="loginForm"><label>اسم المستخدم</label><input name="username" autocomplete="username" required placeholder="Username"><label>كلمة المرور</label><input name="password" type="password" autocomplete="current-password" required placeholder="Password"><button class="primary" style="width:100%;margin-top:18px">تسجيل الدخول</button></form>
+  <div id="loginError" class="notice error hidden"></div>
+ </div>
+</div>
+<div id="appView" class="app hidden">
+ <header class="topbar"><div><strong>نظام ناصيه</strong><small>إدارة العقارات والعملاء</small></div><div class="top-actions"><span id="userInfo" class="user-chip"></span><button id="changePassBtn" class="hidden">تغيير كلمة المرور</button><button id="logoutBtn">خروج</button></div></header>
+ <div class="layout">
+  <aside class="sidebar"><div class="side-title">الشيتات</div><div id="sheetLinks" style="width:100%"></div><div id="adminTools" class="hidden"><hr style="border:0;border-top:1px solid var(--line);margin:14px 0"><div class="side-title">الإدارة</div><button class="secondary" style="width:100%" id="usersBtn">إدارة الحسابات</button><button class="secondary" style="width:100%;margin-top:8px" id="backupBtn">تنزيل نسخة احتياطية Excel</button></div></aside>
+  <main class="content">
+   <div id="propertyListView">
+   <div class="page-head"><div><h2 id="sheetTitle">الشيت</h2><p id="sheetSub">عرض بيانات العقارات</p></div><button class="primary" id="addBtn">＋ إضافة عقار</button></div>
+   <section class="stats" id="statsCards"></section>
+   <section class="panel"><div class="toolbar"><input id="searchBox" placeholder="بحث بالاسم أو الهاتف أو العنوان..."><select id="statusFilter"><option value="">كل الحالات</option><option>موجود</option><option>اتباع</option><option>غير متوفر حاليا</option></select><button class="secondary" id="refreshBtn">تحديث</button><span id="permissionHint" class="readonly"></span></div></section>
+   <section class="panel"><div class="table-wrap"><table><thead><tr><th>الموظف / الوكيل</th><th>نوع العميل</th><th>الاسم</th><th>رقم الهاتف</th><th>العنوان التفصيلي</th><th>السعر</th><th>مواصفات العقار</th><th>الحالة</th><th>إجراء</th></tr></thead><tbody id="propertyRows"></tbody></table></div><div id="emptyState" class="empty hidden">لا توجد عقارات مسجلة في هذا الشيت حتى الآن.</div></section>
+   <section id="adminStats" class="panel hidden"><h3 style="margin-top:0">ملخص القطاعات</h3><div class="table-wrap"><table class="stats-table"><thead><tr><th>القطاع</th><th>التيم ليدر</th><th>إجمالي العقارات</th><th>موجود</th><th>اتباع</th><th>غير متوفر</th></tr></thead><tbody id="statsRows"></tbody></table></div></section>
+   </div>
+   <section id="propertyDetailView" class="property-detail hidden" aria-live="polite"></section>
+  </main>
+ </div>
+</div>
+<div id="modal" class="modal hidden"><div class="modal-card"><div class="modal-head"><h3 id="modalTitle">إضافة عقار</h3><button class="secondary" id="closeModal">إغلاق</button></div><form id="propertyForm"><input type="hidden" name="id"><div class="form-grid">
+ <div><label>الموظف / الوكيل *</label><input name="agentName" required></div>
+ <div><label>نوع العميل *</label><select name="clientType" required><option value="مالك">مالك</option><option value="مشتري">مشتري</option></select></div>
+ <div><label>اسم المالك / المشتري *</label><input name="clientName" required></div>
+ <div><label>رقم الهاتف *</label><input name="phone" required inputmode="tel"></div>
+ <div class="full"><label>عنوان العقار تفصيليًا بعلامة مميزة *</label><textarea name="address" required></textarea></div>
+ <div id="targetSheetWrap" class="full hidden"><label>الشيت الذي سيُضاف إليه العقار (للأدمن)</label><select name="ownerUsername" id="targetSheet"></select></div>
+ <div><label>سعر العقار *</label><input name="price" type="number" min="0" step="0.01" required></div>
+ <div><label>المساحة (م²)</label><input name="area" type="number" min="0" step="0.01"></div>
+ <div><label>الدور</label><input name="floor"></div>
+ <div><label>التشطيب</label><select name="finishing"><option value="">اختر</option><option>كامل التشطيب</option><option>نصف تشطيب</option><option>بدون تشطيب</option><option>سوبر لوكس</option><option>أخرى</option></select></div>
+ <div><label>المرافق والعدادات</label><input name="utilities" placeholder="كهرباء، مياه، غاز..."></div>
+ <div><label>نسبة الأرض</label><input name="landShare"></div>
+ <div><label>التقسيم</label><input name="layout" placeholder="مثال: 3 غرف، ريسبشن..."></div>
+ <div><label>نوع العقار *</label><select name="propertyType" required><option>شقة</option><option>عمارة</option><option>برج</option><option>منزل</option><option>أرض</option><option>محل</option></select></div>
+ <div><label>حالة العقار *</label><select name="status" required><option>موجود</option><option>اتباع</option><option>غير متوفر حاليا</option></select></div>
+ </div><div class="modal-foot"><button class="primary" type="submit">حفظ العقار</button><button class="secondary" type="button" id="cancelModal">إلغاء</button></div><div id="formError" class="notice error hidden"></div></form></div></div>
+<div id="passModal" class="modal hidden"><div class="modal-card" style="max-width:450px"><div class="modal-head"><h3>تغيير كلمة المرور</h3><button class="secondary" id="closePass">إغلاق</button></div><form id="passForm"><label>كلمة المرور الحالية</label><input name="currentPassword" type="password" required><label>كلمة المرور الجديدة (10 أحرف على الأقل)</label><input name="newPassword" type="password" minlength="10" required><button class="primary" style="margin-top:16px">تغيير كلمة المرور</button><div id="passError" class="notice error hidden"></div><div id="passSuccess" class="notice hidden"></div></form></div></div>
+<div id="usersModal" class="modal hidden"><div class="modal-card" style="max-width:650px"><div class="modal-head"><h3>إدارة الحسابات</h3><button class="secondary" id="closeUsers">إغلاق</button></div><div class="notice">إنشاء الحسابات وتعيين كلمات المرور متاحان للأدمن فقط. كلمة المرور لا تقل عن 10 أحرف.</div><form id="userForm" class="form-grid"><div><label>اسم المستخدم</label><input name="username" required></div><div><label>الاسم الظاهر</label><input name="displayName" required></div><div><label>نوع الحساب</label><select name="role"><option value="LEADER">Team Leader</option><option value="ADMIN">Admin</option></select></div><div><label>القطاع</label><select name="sector"><option>غرب</option><option>شمال</option><option>شرق</option><option>جنوب</option><option>وسط</option></select></div><div class="full"><label>كلمة المرور الأولية</label><input name="password" type="password" minlength="10" required></div><div class="full"><button class="primary">إنشاء الحساب</button></div></form><div id="usersError" class="notice error hidden"></div><h4>الحسابات الحالية</h4><div id="usersList"></div></div></div>
+<script src="/app.js"></script>
+</body></html>

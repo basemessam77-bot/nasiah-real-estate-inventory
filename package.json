@@ -1,0 +1,17 @@
+{
+  "name": "nasiah-real-estate-inventory",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "migrate:neon": "node scripts/migrate-sqlite-to-neon.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.8.1",
+    "express": "^4.21.2",
+    "exceljs": "^4.4.0",
+    "pg": "^8.16.3"
+  }
+}
